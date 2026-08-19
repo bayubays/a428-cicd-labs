@@ -13,10 +13,10 @@ node {
     }
 
     stage('Build') {
-        sh 'npm run build'
+        sh 'NODE_OPTIONS=--openssl-legacy-provider npm run build'
     }
 
     stage('Test') {
-        sh 'npm test -- --watchAll=false'
+        sh 'NODE_OPTIONS=--openssl-legacy-provider npm test -- --watchAll=false'
     }
 }
