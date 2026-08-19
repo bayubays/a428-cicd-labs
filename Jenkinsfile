@@ -1,25 +1,22 @@
 node {
-    tools {
-        nodejs 'NodeJS'
-    }
-
     stage('Checkout') {
         checkout scm
+    }
+
+    stage('Setup Node.js') {
+        def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        env.PATH = "${nodeHome}/bin:${env.PATH}"
     }
 
     stage('Install Dependencies') {
         sh 'npm install'
     }
 
-    stage('Run Tests') {
-        sh 'npm test -- --watchAll=false'
-    }
-
     stage('Build') {
         sh 'npm run build'
     }
 
-    stage('Archive Artifacts') {
-        archiveArtifacts artifacts: 'build/**', fingerprint: true
+    stage('Test') {
+        sh 'npm test -- --watchAll=false'
     }
 }
